@@ -1,6 +1,6 @@
 <?php
 
-defined('B_PROLOG_INCLUDED') or die();
+defined('B_PROLOG_INCLUDED') and (B_PROLOG_INCLUDED === true) or die();
 
 use Bitrix\Main\Loader;
 

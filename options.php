@@ -1,6 +1,6 @@
 <?php
 
-defined('B_PROLOG_INCLUDED') or die();
+defined('B_PROLOG_INCLUDED') and (B_PROLOG_INCLUDED === true) or die();
 
 use Bitrix\Main\Application;
 use Bitrix\Main\Config\Option;
@@ -70,10 +70,10 @@ $aTabs = [
         "TITLE" => Loc::getMessage("DROGALOV_ORDERHANDLER_STATUS_ORDER_TITLE"),
     ],
     [
-        "DIV" => "donate",
-        "TAB" => 'Еще таб',
-        "ICON" => "main_user_edit",
-        "TITLE" => 'Заголовок',
+        "DIV" => "info",
+        "TAB" => 'Описание',
+        "ICON" => "info",
+        "TITLE" => 'Информация о разработчике',
     ],
 ];
 
@@ -172,10 +172,8 @@ $tabControl->begin();
 
 
     <?php
-    $tabControl->BeginNextTab();
 
-    echo 'Еще один таб';
-
+    include __DIR__.'/tabs/info.php';
 
     $tabControl->Buttons([
         "btnSave" => true,
