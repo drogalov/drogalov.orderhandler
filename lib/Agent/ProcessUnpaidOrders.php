@@ -7,6 +7,7 @@ use Bitrix\Main\Type\DateTime;
 use Bitrix\Sale\Order;
 use Bitrix\Main\Loader;
 use Drogalov\OrderHandler\Module;
+use Drogalov\OrderHandler\Service\LoggerService;
 
 /**
  * Агент для обработки неоплаченных заказов.
@@ -42,23 +43,25 @@ class ProcessUnpaidOrders
             $orderObj->setField('STATUS_ID', $statusToSet);
 
             $result = $orderObj->save();
-            if (!$result->isSuccess()) {
-                self::logError($result->getErrorMessages(), $orderData['ID']);
+            if ($result->isSuccess()) {
+                LoggerService::info(
+                    'Информация при смене статуса неоплаченного заказа',
+                    [
+                        'orderId' => $orderData['ID'],
+                        'success'  => $statusToSet,
+                    ]
+                );
+            } else {
+                LoggerService::error(
+                    'Ошибка при смене статуса неоплаченного заказа',
+                    [
+                        'orderId' => $orderData['ID'],
+                        'errors'  => $result->getErrorMessages(),
+                    ]
+                );
             }
         }
 
         return __METHOD__ . '();';
-    }
-
-    private static function logError(array $errors, int $orderId): void
-    {
-        \Bitrix\Main\Diag\Debug::writeToFile(
-            [
-                'orderId' => $orderId,
-                'errors'  => $errors
-            ],
-            'Process unpaid orders error',
-            '/log_order_process.txt'
-        );
     }
 }
