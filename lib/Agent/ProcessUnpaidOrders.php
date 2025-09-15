@@ -48,7 +48,7 @@ class ProcessUnpaidOrders
                     'Информация при смене статуса неоплаченного заказа',
                     [
                         'orderId' => $orderData['ID'],
-                        'success'  => $statusToSet,
+                        'status'  => $statusToSet,
                     ]
                 );
             } else {
