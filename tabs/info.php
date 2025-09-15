@@ -18,11 +18,12 @@ use \Bitrix\Main\Localization\Loc;
     }
     .card{background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:0 6px 18px rgba(11,99,198,0.06);}
     header{display:flex;gap:16px;align-items:center;margin-bottom:12px;}
-    .logo{width:64px;height:64px;border-radius:8px;background:linear-gradient(180deg,var(--accent),#0a57b0);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;}
+    .logo{width:64px;height:64px;border-radius:8px;background-image: linear-gradient(to left top, #51d4da, #77d3f6, #abd0fd, #d4cdf5, #eccfe7);display:flex;align-items:center;justify-content:center;}
+    .logo img{width:48px;height:48px;}
     h1{font-size:20px;margin:0;}
     p.lead{margin:8px 0 18px;color:var(--muted);}
 
-    .grid{display:grid;grid-template-columns:1fr 320px;gap:18px;}
+    .grid{display:grid;grid-template-columns:1fr auto;gap:18px;}
     @media (max-width:880px){ .grid{grid-template-columns:1fr;} }
 
     section{margin-bottom:14px;}
@@ -34,16 +35,15 @@ use \Bitrix\Main\Localization\Loc;
 
     .meta{background:#fff;border:1px solid var(--border);padding:12px;border-radius:8px;}
     .meta dt{font-weight:700;margin-top:8px;color:#0b1726;}
-    .meta dd{margin:4px 0 8px;color:var(--muted);}
+    .meta dd{margin:8px 0 14px;color:var(--muted);}
     footer{margin-top:18px;color:var(--muted);font-size:13px;}
-    pre.snip{background:#0b1726;color:#e6eef9;padding:12px;border-radius:8px;overflow:auto;font-family:var(--mono);font-size:13px;line-height:1.4;}
 </style>
 <article class="card" role="article" aria-labelledby="title">
     <header>
-        <div class="logo" aria-hidden="true">DH</div>
+        <div class="logo" aria-hidden="true"><img src="https://drogalov.pro/favicon.ico" alt=""></div>
         <div>
             <h1 id="title">Drogalov Order Handler — автоматическая обработка заказов</h1>
-            <p class="lead">Модуль для 1C-Bitrix: автоматическая смена статуса неоплаченных заказов по таймеру через агент. Настройка — через админку.</p>
+            <p class="lead">Модуль для 1C-Bitrix: автоматическая смена статуса неоплаченных заказов по таймеру через агент.</p>
         </div>
     </header>
 
@@ -56,7 +56,7 @@ use \Bitrix\Main\Localization\Loc;
                     <li>Настройка интервала агента (секунды) и времени следующего запуска.</li>
                     <li>Выбор статуса, который будет установлен неоплаченным заказам (например, «AN» — аннулирован).</li>
                     <li>Включение/выключение обработчика через чекбокс в настройках модуля.</li>
-                    <li>Логирование ошибок обработки заказов в отдельный лог-файл.</li>
+                    <li>Логирование обработки заказов в отдельные лог-файлы.</li>
                 </ul>
             </section>
 
@@ -70,28 +70,12 @@ use \Bitrix\Main\Localization\Loc;
             </section>
 
             <section aria-labelledby="install">
-                <h2 id="install">Установка</h2>
+                <h2 id="install">Установка и настройка</h2>
                 <ol>
-                    <li>Скопируйте папку модуля в <code class="kbd">/local/modules/drogalov.orderhandler/</code>.</li>
+                    <li>Скопируйте папку модуля в директорию <code class="kbd">/local/modules/</code>.</li>
                     <li>В админке Bitrix установите модуль через «Маркетплейс → Установленные решения» или «Установить модуль».</li>
                     <li>Откройте настройки модуля и задайте параметры: интервал, время старта, статус и включение агента.</li>
                 </ol>
-            </section>
-
-            <section aria-labelledby="usage">
-                <h2 id="usage">Пример использования в коде</h2>
-                <pre class="snip">
-                    <code>
-// Зарегистрировать агента
-\Drogalov\OrderHandler\Service\UnpaidOrdersAgentHelper::registerAgent();
-
-// Удалить агента
-\Drogalov\OrderHandler\Service\UnpaidOrdersAgentHelper::unregisterAgent();
-
-// Получить дефолты
-$defaults = \Drogalov\OrderHandler\Service\ModuleDefaults::get();
-                    </code>
-                </pre>
             </section>
         </main>
 
@@ -101,14 +85,11 @@ $defaults = \Drogalov\OrderHandler\Service\ModuleDefaults::get();
                 <dt>MODULE ID</dt>
                 <dd><code class="kbd">drogalov.orderhandler</code></dd>
 
-                <dt>Опции</dt>
-                <dd>cancel_after_hours, agent_interval, start_agent, cancel_status, enable_agent</dd>
+                <dt>Функция агента</dt>
+                <dd><code class="kbd">Drogalov\OrderHandler\Agent\ProcessUnpaidOrders::run();</code></dd>
 
-                <dt>Агент</dt>
-                <dd>ProcessUnpaidOrders::run()</dd>
-
-                <dt>Лог</dt>
-                <dd>/upload/log_order_process.txt (или /log_order_process.txt в корне)</dd>
+                <dt>Логирование</dt>
+                <dd><code class="kbd">/upload/logs/order_handler/</code></dd>
             </dl>
         </aside>
     </div>
